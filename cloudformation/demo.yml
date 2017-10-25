@@ -151,7 +151,6 @@ Resources:
         ImageId: !FindInMap [ "AWSRegionToAMI", !Ref "AWS::Region", "AMIID" ]
         InstanceType: !Ref InstanceType
         KeyName: wslug-demo
-        DisableApiTermination: True
         SecurityGroupIds:
           - !Ref DemoSecurityGroup
         Tags:
@@ -170,7 +169,6 @@ Resources:
         ImageId: !FindInMap [ "AWSRegionToAMI", !Ref "AWS::Region", "AMIID" ]
         InstanceType: !Ref InstanceType
         KeyName: wslug-demo
-        DisableApiTermination: True
         SecurityGroupIds:
           - !Ref DemoSecurityGroup
         Tags:
