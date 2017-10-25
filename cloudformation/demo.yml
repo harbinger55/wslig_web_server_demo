@@ -132,12 +132,17 @@ Resources:
           ToPort: "443"
           CidrIp: "0.0.0.0/0"
         -
-          # Allow ssh port from 70.177.4.2/32(fastlink)
+          # Allow ssh port from ALL
           IpProtocol: "tcp"
           FromPort: "22"
           ToPort: "22"
           CidrIp: "0.0.0.0/0"
-
+        -
+          # Allow mosh
+          IpProtocol: "tcp"
+          FromPort: "60000"
+          ToPort: "61000"
+          CidrIp: "0.0.0.0/0"
 
   ApacheServer:
      Type: "AWS::EC2::Instance"
