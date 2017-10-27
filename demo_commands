@@ -1,0 +1,92 @@
+
+Build demo
+
+% aws cloudformation create-stack --stack-name demo --template-body file://demo.yml --profile personal --region us-west-2 --capabilities CAPABILITY_NAMED_IAM
+
+Get EIPs and update DNS
+% tmux
+
+% ssh -i ~/projects/git/wslug_web_server_demo/wslug-demo.pem ubuntu@apache1.cordump.net
+
+Install apache
+% sudo apt update
+% sudo apt install -y apache2
+% cd /var/www/html
+% sudo rm index.html 
+% sudo vim index.html
+    Add “Hello World Apache!"
+% cd /etc/apache2/sites-enabled/
+% ls -la
+    show how Ubuntu/debian enables sites
+ crtl-b %
+    ctrl-b arrows to switch
+% tail -f  /var/log/apache2/access.log
+% curl --head http://
+OPEN in BROwser 
+% sudo vim /etc/apache2/sites-available/000-default.conf
+        RewriteEngine on
+        Redirect "/google" "http://www.google.com/"
+% cat /etc/apache2/mods-available/rewrite.load
+% sudo ln -s /etc/apache2/mods-available/rewrite.load /etc/apache2/mods-enabled/rewrite.load
+% sudo systemctl restart apache2
+ crtl-b %
+    ctrl-b arrows to switch
+% tail -f  /var/log/apache2/access.log
+% curl —head http://.../gooogle
+OPEN in BROwser 
+
+% sudo vim /etc/apache2/sites-available/001-apache1.cordump.net.conf
+% sudo mkdir -p /var/www/apache1.cordump.net
+% sudo vim /var/www/apache1.cordump.net/index.html
+hello apache1.cordump.net
+% sudo ln -s /etc/apache2/sites-available/001-apache1.cordump.net.conf /etc/apache2/sites-enabled/001-apache1.cordump.net.conf
+% sudo systemctl restart apache2
+OPEN in BROwser
+
+install ngnix
+% ssh -i ~/projects/git/wslug_web_server_demo/wslug-demo.pem ubuntu@nginx1.cordump.net
+% sudo apt update
+% sudo apt install -y nginx
+% cd /var/www/html
+% sudo rm index.nginx-debian.html
+% sudo vim index.html
+Add “Hello World Nginx!"
+% tail -f /var/log/nginx/access.log
+ crtl-b %
+    ctrl-b arrows to switch
+% curl --head http://
+OPEN in BROwser 
+
+% sudo vim /etc/nginx/sites-available/default
+rewrite /google http://www.google.com;
+% sudo systemctl restart nginx.service
+ crtl-b %
+    ctrl-b arrows to switch
+% tail -f /var/log/nginx/access.log
+% curl —head http://.../gooogle
+OPEN in BROwser 
+
+% sudo mkdir -p /var/www/nginx1.cordump.net
+% sudo vim /etc/nginx/sites-available/nginx1.cordump.net
+    Copy from vscode
+% sudo ln -s /etc/nginx/sites-available/nginx1.cordump.net /etc/nginx/sites-enabled/nginx1.cordump.net
+% sudo vim /var/www/nginx1.cordump.net/index.html
+    hello nginx1.cordump.net
+% sudo systemctl restart nginx.service
+ crtl-b %
+    ctrl-b arrows to switch
+% tail -f /var/log/nginx/access.log
+% curl --head http://nginx1.cordump.net
+OPEN in BROwser 
+
+SSL on Nginx
+% sudo add-apt-repository ppa:certbot/certbot # add the certbot repo
+% sudo apt update
+% sudo apt install -y python-certbot-nginx
+% sudo certbot --nginx -d nginx1.cordump.net
+% sudo vim /etc/nginx/sites-enabled/nginx1.cordump.net
+SHOW CHANGES
+SHOW In Browser
+
+Delete Stack
+% aws cloudformation delete-stack --stack-name demo --profile personal --region us-west-2
